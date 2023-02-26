@@ -21,5 +21,9 @@ public static class Hello
     
     // Function to test what happens if we make JetBrains.Annotations private
     [Pure]
-    public static string Pure() => nameof(Pure);
+    public static string PureJetbrains() => nameof(PureJetbrains);
+    
+    // Compare with System.Diagnostics.Contracts.PureAttribute
+    [System.Diagnostics.Contracts.Pure]
+    public static string PureSystemDiagnostics() => nameof(PureSystemDiagnostics);
 }
