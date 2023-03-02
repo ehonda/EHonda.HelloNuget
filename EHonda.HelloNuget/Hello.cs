@@ -6,7 +6,7 @@ namespace EHonda.HelloNuget;
 [PublicAPI]
 public static class Hello
 {
-    public static string Nuget => "Hello Nuget";
+    public static string Nuget => "Hello Nuget 0.8.0";
 
     // Function to test stepping into / stepping through functions
     public static int RandomSum()
@@ -26,4 +26,6 @@ public static class Hello
     // Compare with System.Diagnostics.Contracts.PureAttribute
     [System.Diagnostics.Contracts.Pure]
     public static string PureSystemDiagnostics() => nameof(PureSystemDiagnostics);
+
+    public static string JetBrainsAssembly => typeof(PureAttribute).Assembly.FullName ?? string.Empty;
 }
