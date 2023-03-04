@@ -2,7 +2,15 @@
 
     <!-- General dotnet / C# settings for the project -->
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <!--
+            We only target >= net6.0 (and with it, implicitly, >= C# 10), because we want to have file-scoped namespaces
+            and implicit usings available. While we could in theory force the compiler to use C# 10 by setting
+            LangVersion=10, it's not recommended and error prone:
+                > Choosing a language version newer than the default can cause hard to diagnose compile-time and runtime
+                  errors.
+                * See: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
+        -->
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <!--
@@ -27,7 +35,7 @@
             * See (Under `PackageVersion`):
               https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target-inputs
          -->
-        <Version>0.8.0</Version>
+        <Version>0.9.0</Version>
         <PackageId>EHonda.HelloNuget</PackageId>
         <Authors>Dennis Renz</Authors>
         <Description>A nuget package to try out best practices with.</Description>
@@ -40,7 +48,7 @@
         -->
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>sample nuget-best-practices</PackageTags>
-        <PackageReleaseNotes>Include JetBrains annotations.</PackageReleaseNotes>
+        <PackageReleaseNotes>Target net6.0 and net7.0.</PackageReleaseNotes>
         <!--
             License file is the recommended way to include license information (over license file or license url), see:
             https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices#if-your-package-is-open-source
