@@ -5,6 +5,7 @@ on:
 
 jobs:
   get-package-version:
+    name: Get package version
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.get-package-version.outputs.version }}
@@ -17,6 +18,4 @@ jobs:
           dotnet-version: 8
       - name: Get package version
         id: get-package-version
-        run: |
-          echo "version=" >> "$GITHUB_OUTPUT"
-          dotnet build EHonda.HelloNuget --getProperty:Version >> "$GITHUB_OUTPUT"
+        run: echo "version=$(dotnet build EHonda.HelloNuget --getProperty:Version)" >> "$GITHUB_ENV"
