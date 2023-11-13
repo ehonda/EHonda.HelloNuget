@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  verify-release:
+  get-package-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-package-version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -13,5 +15,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8
-      - name: Verify Release
-        run: dotnet build EHonda.HelloNuget --getProperty:Version
+      - name: Get package version
+        id: get-package-version
+        run: |
+          echo "version=" >> "$GITHUB_OUTPUT"
+          dotnet build EHonda.HelloNuget --getProperty:Version >> "$GITHUB_OUTPUT"
