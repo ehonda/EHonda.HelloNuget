@@ -18,4 +18,9 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration Release --output ./packages
       - name: Push to NuGet.org
-        run: dotnet nuget push ./packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ORG_API_KEY }}
+        run: dotnet nuget push ./packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key '$NUGET_ORG_API_KEY'
+        # Don't use the secret directly, but set it as an environment variable, as documented here:
+        #   - https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#using-secrets-in-a-workflow
+        #   - https://github.com/actions/setup-dotnet#nugetorg
+        env:
+          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
