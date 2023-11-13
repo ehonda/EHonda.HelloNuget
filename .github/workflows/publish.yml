@@ -1,7 +1,9 @@
 name: Publish to nuget.org
 
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   publish:
