@@ -1,15 +1,15 @@
-name: publish
+name: Publish to nuget.org
 
 on:
   workflow_dispatch:
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7
-      - run: dotnet publish -c Release -o ./publish
+      - run: dotnet pack --configuration Release --output ./publish
       - run: ls -la ./publish
