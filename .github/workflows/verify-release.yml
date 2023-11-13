@@ -14,4 +14,4 @@ jobs:
         with:
           dotnet-version: 8
       - name: Verify Release
-        run: dotnet build EHonda.HelloNuget --framework net7.0 --getProperty:Version
+        run: dotnet build EHonda.HelloNuget --getProperty:Version
