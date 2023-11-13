@@ -48,7 +48,7 @@
         -->
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>sample nuget-best-practices</PackageTags>
-        <PackageReleaseNotes>See </PackageReleaseNotes>
+        <PackageReleaseNotes>See [PackageReleaseNotes on GitHub](https://github.com/ehonda/EHonda.HelloNuget/releases/tag/0.11.0)</PackageReleaseNotes>
         <!--
             License file is the recommended way to include license information (over license file or license url), see:
             https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices#if-your-package-is-open-source
