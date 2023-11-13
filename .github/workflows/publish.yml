@@ -7,9 +7,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7
-      - run: dotnet pack --configuration Release --output ./publish
-      - run: ls -la ./publish
+      - name: Pack
+        run: dotnet pack --configuration Release --output ./packages
+      - name: Push to NuGet.org
+        run: dotnet nuget push ./packages/*.nupkg --source https://api.nuget.org/v3/index.json \
+              --api-key ${{ secrets.NUGET_API_KEY }}
