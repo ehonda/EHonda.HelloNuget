@@ -1,8 +1,14 @@
+# TODO: Improvements
+#         - Comments
+#         - Better user output
 name: Automatically release and publish to nuget.org
 
 # TODO: Run automatically
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   get-package-metadata:
@@ -63,5 +69,5 @@ jobs:
       - name: Create release
         env:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
-          SHOULD_RELEASE: ${{ needs.check-nuget-exists.outputs.should-release }}
-        run: echo "$SHOULD_RELEASE"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "v$PACKAGE_VERSION" --generate-notes

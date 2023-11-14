@@ -2,9 +2,9 @@ name: Publish to nuget.org
 
 # TODO: Only run if verify-release.yml succeeded
 on:
-  workflow_dispatch:
-  #release:
-  #  types: [published]
+  #workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -15,7 +15,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7
+          dotnet-version: 8
       - name: Pack
         run: dotnet pack --configuration Release --output ./packages
       - name: Push to NuGet.org
