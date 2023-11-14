@@ -43,8 +43,8 @@ jobs:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           PACKAGE_ID: ${{ needs.get-package-metadata.outputs.package-id }}
         run: |
-          LATEST_PACAKGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
-          LATEST_VERSION=$(echo $LATEST_PACAKGE | awk '{print $NF}')
+          LATEST_PACKAGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
+          LATEST_VERSION=$(echo $LATEST_PACKAGE | awk '{print $NF}')
           if [ "$LATEST_VERSION" == "$PACKAGE_VERSION" ]; then
             echo -e "\e[32mINFO:\e[0m Package $PACKAGE_ID@$PACKAGE_VERSION already exists"
             echo "should-release=false" >> $GITHUB_OUTPUT
@@ -56,7 +56,11 @@ jobs:
   create-release:
     name: Create release
     runs-on: ubuntu-latest
-    needs: check-nuget-exists
-    if: needs.check-nuget-exists.outputs.should-release
+    needs: [get-package-metadata, check-nuget-exists]
+    #if: needs.check-nuget-exists.outputs.should-release
     steps:
-      - run: echo "Release created"
+      - name: Create release
+        env:
+          PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
+          SHOULD_RELEASE: ${{ needs.check-nuget-exists.outputs.should-release }}
+        run: echo "$SHOULD_RELEASE"
