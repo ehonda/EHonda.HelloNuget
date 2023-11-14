@@ -9,8 +9,8 @@ jobs:
     name: Get package metadata
     runs-on: ubuntu-latest
     outputs:
-      package-version: ${{ steps.get-package-metadata.outputs.package-version }}
-      package-id: ${{ steps.get-package-metadata.outputs.package-id }}
+      package-version: ${{ steps.get-package-version.outputs.package-version }}
+      package-id: ${{ steps.get-package-id.outputs.package-id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,8 +19,8 @@ jobs:
         with:
           dotnet-version: 8
       - name: Get package version
-        id: get-package-metadata
-        run: echo "version=$(dotnet build EHonda.HelloNuget --getProperty:PackageVersion)" >> "$GITHUB_OUTPUT"
+        id: get-package-version
+        run: echo "package-version=$(dotnet build EHonda.HelloNuget --getProperty:PackageVersion)" >> "$GITHUB_OUTPUT"
       - name: Get package id
         id: get-package-id
         run: echo "package-id=$(dotnet build EHonda.HelloNuget --getProperty:PackageId)" >> "$GITHUB_OUTPUT"
