@@ -43,9 +43,9 @@ jobs:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           PACKAGE_ID: ${{ needs.get-package-metadata.outputs.package-id }}
         run: |
-          OUTPUT=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
-          VERSION=$(echo $OUTPUT | awk '{print $NF}')
-          if [ "$VERSION" == "$PACKAGE_VERSION" ]; then
+          LATEST_PACAKGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
+          LATEST_VERSION=$(echo $LATEST_PACAKGE | awk '{print $NF}')
+          if [ "$LATEST_VERSION" == "$PACKAGE_VERSION" ]; then
             echo "package-exists=true" >> $GITHUB_OUTPUT
           else
             echo "package-exists=false" >> $GITHUB_OUTPUT
