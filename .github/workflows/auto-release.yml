@@ -66,6 +66,8 @@ jobs:
     needs: [get-package-metadata, check-nuget-exists]
     if: needs.check-nuget-exists.outputs.should-release
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Create release
         env:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
