@@ -39,6 +39,7 @@ jobs:
         with:
           dotnet-version: 8
       - name: Check nuget.org package exists
+        id: check-nuget-exists
         env:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           PACKAGE_ID: ${{ needs.get-package-metadata.outputs.package-id }}
