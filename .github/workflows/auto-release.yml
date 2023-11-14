@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: get-package-metadata
     outputs:
-      package-exists: ${{ steps.check-nuget-exists.outputs.package-exists }}
+      should-release: ${{ steps.check-nuget-exists.outputs.should-release }}
     steps:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
@@ -43,21 +43,18 @@ jobs:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           PACKAGE_ID: ${{ needs.get-package-metadata.outputs.package-id }}
         run: |
-          echo "$PACKAGE_ID $PACKAGE_VERSION"
-          nuget list "$PACKAGE_ID" -Source https://api.nuget.org/v3/index.json
-        #run: |
-        #  LATEST_PACAKGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
-        #  LATEST_VERSION=$(echo $LATEST_PACAKGE | awk '{print $NF}')
-        #  if [ "$LATEST_VERSION" == "$PACKAGE_VERSION" ]; then
-        #    echo "package-exists=true" >> $GITHUB_OUTPUT
-        #  else
-        #    echo "package-exists=false" >> $GITHUB_OUTPUT
-        #  fi
+          LATEST_PACAKGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
+          LATEST_VERSION=$(echo $LATEST_PACAKGE | awk '{print $NF}')
+          if [ "$LATEST_VERSION" == "$PACKAGE_VERSION" ]; then
+            echo "should-release=false" >> $GITHUB_OUTPUT
+          else
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          fi
 
   create-release:
     name: Create release
     runs-on: ubuntu-latest
     needs: check-nuget-exists
-    if: needs.check-nuget-exists.outputs.package-exists
+    if: needs.check-nuget-exists.outputs.should-release
     steps:
       - run: echo "Release created"
