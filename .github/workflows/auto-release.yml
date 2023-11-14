@@ -57,4 +57,4 @@ jobs:
     needs: check-nuget-exists
     if: needs.check-nuget-exists.outputs.package-exists
     steps:
-      run: echo "Release created"
+      - run: echo "Release created"
