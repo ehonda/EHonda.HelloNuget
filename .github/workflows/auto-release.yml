@@ -71,5 +71,6 @@ jobs:
       - name: Create release
         env:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # TODO: Set permissions on token
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release create "v$PACKAGE_VERSION" --generate-notes
