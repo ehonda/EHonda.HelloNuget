@@ -46,8 +46,10 @@ jobs:
           LATEST_PACAKGE=$(nuget list $PACKAGE_ID -Source https://api.nuget.org/v3/index.json)
           LATEST_VERSION=$(echo $LATEST_PACAKGE | awk '{print $NF}')
           if [ "$LATEST_VERSION" == "$PACKAGE_VERSION" ]; then
+            echo -e "\e[32mINFO:\e[0m Package $PACKAGE_ID@$PACKAGE_VERSION already exists"
             echo "should-release=false" >> $GITHUB_OUTPUT
           else
+            echo -e "\e[32mINFO:\e[0m Package $PACKAGE_ID@$PACKAGE_VERSION does not exist"
             echo "should-release=true" >> $GITHUB_OUTPUT
           fi
 
