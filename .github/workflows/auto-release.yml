@@ -67,6 +67,9 @@ jobs:
   create-release:
     name: Create release
     runs-on: ubuntu-latest
+    permissions:
+      # Required to create the release
+      contents: write
     # Deactivate for testing
     #needs: [get-package-metadata, check-nuget-exists]
     #if: needs.check-nuget-exists.outputs.should-release
@@ -82,4 +85,4 @@ jobs:
         run: |
           gh auth status
           gh release list --repo ehonda/EHonda.HelloNuget
-          gh release create "v$PACKAGE_VERSION" --generate-notes --repo ehonda/EHonda.HelloNuget
+          gh release create "test" --draft --generate-notes
