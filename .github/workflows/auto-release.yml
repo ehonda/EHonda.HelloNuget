@@ -76,3 +76,25 @@ jobs:
           PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release create "v$PACKAGE_VERSION" --generate-notes
+
+  # Moved here from publish.yml because we can't trigger that workflow with our release creation action using
+  # GITHUB_TOKEN. As a workaround, for now, we copy the job here and make it need create-release.
+  publish:
+    runs-on: ubuntu-latest
+    needs: create-release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8
+      - name: Pack
+        run: dotnet pack --configuration Release --output ./packages
+      - name: Push to NuGet.org
+        run: dotnet nuget push ./packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key "$NUGET_ORG_API_KEY"
+        # Don't use the secret directly, but set it as an environment variable, as documented here:
+        #   - https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#using-secrets-in-a-workflow
+        #   - https://github.com/actions/setup-dotnet#nugetorg
+        env:
+          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
