@@ -12,8 +12,6 @@ on:
 
 jobs:
   get-package-metadata:
-    # Deactivate for testing
-    if: ${{ false }}
     name: Get package metadata
     runs-on: ubuntu-latest
     outputs:
@@ -36,8 +34,6 @@ jobs:
   # TODO: Improvements:
   #         - Check if we're >= any existing version
   check-nuget-exists:
-    # Deactivate for testing
-    if: ${{ false }}
     name: Check nuget.org package exists
     runs-on: ubuntu-latest
     needs: get-package-metadata
@@ -70,19 +66,13 @@ jobs:
     permissions:
       # Required to create the release
       contents: write
-    # Deactivate for testing
-    #needs: [get-package-metadata, check-nuget-exists]
-    #if: needs.check-nuget-exists.outputs.should-release
+    needs: [get-package-metadata, check-nuget-exists]
+    if: needs.check-nuget-exists.outputs.should-release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Create release
         env:
-          #PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
-          # TODO: Set permissions on token
+          PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #run: gh release create "v$PACKAGE_VERSION" --generate-notes
-        run: |
-          gh auth status
-          gh release list --repo ehonda/EHonda.HelloNuget
-          gh release create "test" --draft --generate-notes
+        run: gh release create "v$PACKAGE_VERSION" --generate-notes
