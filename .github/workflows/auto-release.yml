@@ -77,6 +77,6 @@ jobs:
         env:
           #PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           # TODO: Set permissions on token
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         #run: gh release create "v$PACKAGE_VERSION" --generate-notes
         run: gh auth status
