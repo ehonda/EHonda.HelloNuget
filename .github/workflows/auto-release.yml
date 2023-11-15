@@ -82,3 +82,4 @@ jobs:
         run: |
           gh auth status
           gh release list --repo ehonda/EHonda.HelloNuget
+          gh release create "v$PACKAGE_VERSION" --generate-notes --repo ehonda/EHonda.HelloNuget
