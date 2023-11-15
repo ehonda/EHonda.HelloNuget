@@ -12,6 +12,8 @@ on:
 
 jobs:
   get-package-metadata:
+    # Deactivate for testing
+    if: ${{ false }}
     name: Get package metadata
     runs-on: ubuntu-latest
     outputs:
@@ -34,6 +36,8 @@ jobs:
   # TODO: Improvements:
   #         - Check if we're >= any existing version
   check-nuget-exists:
+    # Deactivate for testing
+    if: ${{ false }}
     name: Check nuget.org package exists
     runs-on: ubuntu-latest
     needs: get-package-metadata
@@ -63,14 +67,16 @@ jobs:
   create-release:
     name: Create release
     runs-on: ubuntu-latest
-    needs: [get-package-metadata, check-nuget-exists]
-    if: needs.check-nuget-exists.outputs.should-release
+    # Deactivate for testing
+    #needs: [get-package-metadata, check-nuget-exists]
+    #if: needs.check-nuget-exists.outputs.should-release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Create release
         env:
-          PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
+          #PACKAGE_VERSION: ${{ needs.get-package-metadata.outputs.package-version }}
           # TODO: Set permissions on token
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "v$PACKAGE_VERSION" --generate-notes
+        #run: gh release create "v$PACKAGE_VERSION" --generate-notes
+        run: gh auth status
