@@ -1,0 +1,24 @@
+name: Test "should release" functionality
+
+on:
+    workflow_dispatch:
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        outputs:
+            should_release: ${{ steps.should_release.outputs.should_release }}
+        steps:
+            - id: should_release
+              run: echo "should_release=true" >> $GITHUB_ENV
+
+    release:
+        needs: check
+        if: needs.check.outputs.should_release
+        runs-on: ubuntu-latest
+        steps:
+            - env:
+                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+              run: |
+                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+                echo "Releasing"

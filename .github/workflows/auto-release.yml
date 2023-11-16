@@ -18,8 +18,10 @@ jobs:
       package-version: ${{ steps.get-package-version.outputs.package-version }}
       package-id: ${{ steps.get-package-id.outputs.package-id }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8
       - name: Get package version
