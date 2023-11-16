@@ -2,6 +2,11 @@ name: Test "should release" functionality
 
 on:
     workflow_dispatch:
+        inputs:
+            should_release:
+                description: "The string set for the should_release output"
+                required: true
+                default: "false"
 
 jobs:
     check:
@@ -10,11 +15,24 @@ jobs:
             should_release: ${{ steps.should_release.outputs.should_release }}
         steps:
             - id: should_release
-              run: echo "should_release=true" >> $GITHUB_OUTPUT
+              run: echo "should_release=$INPUT_SHOULD_RELEASE" >> $GITHUB_OUTPUT
+              env:
+                INPUT_SHOULD_RELEASE: ${{ inputs.should_release }}
 
-    release:
+    release-from-json:
         needs: check
         if: fromJson(needs.check.outputs.should_release)
+        runs-on: ubuntu-latest
+        steps:
+            - env:
+                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+              run: |
+                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+                echo "Releasing"
+
+    release-string-equality:
+        needs: check
+        if: needs.check.outputs.should_release == 'true'
         runs-on: ubuntu-latest
         steps:
             - env:
