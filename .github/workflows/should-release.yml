@@ -1,64 +1,88 @@
 name: Test "should release" functionality
 
 on:
-    workflow_dispatch:
-        inputs:
-            should_release:
-                description: "The string set for the should_release output"
-                required: true
-                default: "false"
+  workflow_dispatch:
+    inputs:
+      should_release:
+        description: "The string set for the should_release output"
+        required: true
+        default: "false"
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        outputs:
-            should_release: ${{ steps.should_release.outputs.should_release }}
-        steps:
-            - id: should_release
-              run: echo "should_release=$INPUT_SHOULD_RELEASE" >> $GITHUB_OUTPUT
-              env:
-                INPUT_SHOULD_RELEASE: ${{ inputs.should_release }}
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.should_release.outputs.should_release }}
+    steps:
+      - id: should_release
+        run: echo "should_release=$INPUT_SHOULD_RELEASE" >> $GITHUB_OUTPUT
+        env:
+          INPUT_SHOULD_RELEASE: ${{ inputs.should_release }}
 
-    release-from-json:
-        needs: check
-        if: fromJson(needs.check.outputs.should_release)
-        runs-on: ubuntu-latest
-        steps:
-            - env:
-                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
-              run: |
-                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
-                echo "Releasing"
+  # Triggers on
+  #   - "true" ✅
+  # Does not trigger on
+  #   - "false" ✅
+  #   - "False" ✅/❌ (does cause a GitHub Actions internal error and the job is just missing from the UI)
+  #   - "True" ✅/❌ (does cause a GitHub Actions internal error and the job is just missing from the UI)
+  release-from-json:
+    needs: check
+    if: fromJson(needs.check.outputs.should_release)
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+        run: |
+          echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+          echo "Releasing"
 
-    release-string-equality:
-        needs: check
-        if: needs.check.outputs.should_release == 'true'
-        runs-on: ubuntu-latest
-        steps:
-            - env:
-                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
-              run: |
-                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
-                echo "Releasing"
+  # Triggers on
+  #   - "true" ✅
+  # Does not trigger on
+  #   - "false" ✅
+  #   - "False" ✅
+  #   - "True" ✅
+  release-string-equality:
+    needs: check
+    if: needs.check.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+        run: |
+          echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+          echo "Releasing"
 
-    release-boolean-equality:
-        needs: check
-        if: needs.check.outputs.should_release == true
-        runs-on: ubuntu-latest
-        steps:
-            - env:
-                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
-              run: |
-                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
-                echo "Releasing"
+  # Triggers on
+  # Does not trigger on
+  #   - "true" ❌
+  #   - "false" ✅
+  #   - "False" ✅
+  #   - "True" ✅
+  release-boolean-equality:
+    needs: check
+    if: needs.check.outputs.should_release == true
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+        run: |
+          echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+          echo "Releasing"
 
-    release-no-equality:
-        needs: check
-        if: needs.check.outputs.should_release
-        runs-on: ubuntu-latest
-        steps:
-            - env:
-                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
-              run: |
-                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
-                echo "Releasing"
+  # Triggers on
+  #   - "true" ✅
+  #   - "false" ❌
+  #   - "False" ❌
+  #   - "True" ❌    
+  # Does not trigger on
+  release-no-equality:
+    needs: check
+    if: needs.check.outputs.should_release
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+        run: |
+          echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+          echo "Releasing"

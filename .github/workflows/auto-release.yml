@@ -10,7 +10,13 @@ on:
     branches:
       - main
 
+# TODO: Split into two workflows, one that does testing and one that does release and publish. Call the two
+#       workflows from a workflow that runs on push to main.
+
 jobs:
+  test:
+    uses: ./.github/workflows/tests.yml
+
   get-package-metadata:
     name: Get package metadata
     runs-on: ubuntu-latest
@@ -67,7 +73,8 @@ jobs:
       # Required to create the release
       contents: write
     needs: [get-package-metadata, check-nuget-exists]
-    if: needs.check-nuget-exists.outputs.should-release
+    # This is the best way to check a "boolean" job output, as documented in the tests conducted in 'should-release.yml'
+    if: needs.check-nuget-exists.outputs.should-release == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

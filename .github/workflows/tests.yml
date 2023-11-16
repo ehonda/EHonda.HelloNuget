@@ -1,25 +1,18 @@
-# See https://github.com/actions/setup-dotnet
-
-name: Run tests
+name: Run dotnet tests
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_call:
 
 jobs:
-  build:
-    # TODO: Use alpine?
+  test:
+    name: Run dotnet tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
-      # TODO: Use global.json file
-      with:
-        dotnet-version: 7.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build -c Release --no-restore
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8
+      - name: Run dotnet tests
+        run: dotnet test --configuration Release
