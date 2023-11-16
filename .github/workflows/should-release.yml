@@ -40,3 +40,14 @@ jobs:
               run: |
                 echo "SHOULD_RELEASE=$SHOULD_RELEASE"
                 echo "Releasing"
+
+    release-boolean-equality:
+        needs: check
+        if: needs.check.outputs.should_release == true
+        runs-on: ubuntu-latest
+        steps:
+            - env:
+                SHOULD_RELEASE: ${{ needs.check.outputs.should_release }}
+              run: |
+                echo "SHOULD_RELEASE=$SHOULD_RELEASE"
+                echo "Releasing"
