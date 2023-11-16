@@ -72,7 +72,7 @@ jobs:
     permissions:
       # Required to create the release
       contents: write
-    needs: [get-package-metadata, check-nuget-exists]
+    needs: [test, get-package-metadata, check-nuget-exists]
     # This is the best way to check a "boolean" job output, as documented in the tests conducted in 'should-release.yml'
     if: needs.check-nuget-exists.outputs.should-release == 'true'
     steps:
