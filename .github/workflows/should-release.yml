@@ -4,6 +4,18 @@ on:
     workflow_dispatch:
 
 jobs:
+    test-from-json:
+        runs-on: ubuntu-latest
+        steps:
+            - run: |
+                echo ${{ fromJson(true) }}
+                echo ${{ fromJson(false) }}
+                echo ${{ fromJson(1) }}
+                echo ${{ fromJson(2) }}
+                echo ${{ fromJson('$SOME_STRING') }}
+              env:
+                SOME_STRING: "string"
+
     check:
         runs-on: ubuntu-latest
         outputs:
