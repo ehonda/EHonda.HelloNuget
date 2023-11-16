@@ -13,8 +13,8 @@ jobs:
                 echo ${{ fromJson(1) }}
                 echo ${{ fromJson(2) }}
                 echo ${{ fromJson('{ "a": "b" }') }}
-                #echo ${{ fromJson('True') }}
-                #echo ${{ fromJson('False') }}
+            #    echo ${{ fromJson('True') }}
+            #    echo ${{ fromJson('False') }}
 
     check:
         runs-on: ubuntu-latest
