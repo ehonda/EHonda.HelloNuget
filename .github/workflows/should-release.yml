@@ -10,7 +10,7 @@ jobs:
             should_release: ${{ steps.should_release.outputs.should_release }}
         steps:
             - id: should_release
-              run: echo "should_release=true" >> $GITHUB_OUTPUT
+              run: echo "should_release=false" >> $GITHUB_OUTPUT
 
     release:
         needs: check
