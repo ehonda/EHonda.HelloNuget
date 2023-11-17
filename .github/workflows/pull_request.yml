@@ -1,0 +1,12 @@
+# See https://github.com/actions/setup-dotnet
+
+name: Run tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    uses: ./.github/workflows/tests.yml
