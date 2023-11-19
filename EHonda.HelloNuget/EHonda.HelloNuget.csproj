@@ -61,6 +61,13 @@
     <!--
         SourceLink / Symbol Package
         
+        < net8.0:
+        
+        For a demo of how to enable full source link functionality in a pre-net8.0 project, see this sample:
+            https://github.com/ehonda/EHonda.HelloNuget/blob/0dd6a4632362217f255d004c32fb0bd63efb0233/EHonda.HelloNuget/EHonda.HelloNuget.csproj
+            
+        >= net8.0:
+        
         The documentation (https://github.com/dotnet/sourcelink#using-source-link-in-net-projects) states that we don't
         need to include SourceLink or set properties related to it anymore if we're using the SDK in net8.0 or higher,
         which we can verify (as they check all boxes in nuget.info for package Health) via the following versions
