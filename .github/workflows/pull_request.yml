@@ -1,6 +1,5 @@
-# See https://github.com/actions/setup-dotnet
-
-name: Run tests
+# Runs the tests on any pull request to the main branch
+name: Pull Request
 
 on:
   pull_request:
@@ -9,4 +8,4 @@ on:
 
 jobs:
   test:
-    uses: ./.github/workflows/tests.yml
+    uses: relaxdays/templates/github/workflows/dotnet/test.yml@main
