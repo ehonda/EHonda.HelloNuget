@@ -8,4 +8,4 @@ on:
 
 jobs:
   test:
-    uses: relaxdays/templates/.github/workflows/dotnet/test.yml@main
+    uses: relaxdays/templates/.github/workflows/dotnet-test.yml@main
