@@ -1,6 +1,5 @@
-# See https://github.com/actions/setup-dotnet
-
-name: Run tests
+# Runs the tests on any pull request to the main branch
+name: Pull Request
 
 on:
   pull_request:
@@ -9,4 +8,14 @@ on:
 
 jobs:
   test:
-    uses: ./.github/workflows/tests.yml
+    # It's tempting to use a fancy name like `name: .` here to have a nice check name in the PR, which would then be:
+    #
+    #   Pull Request / . / Run tests (pull_request)
+    #
+    # It's then not ideal for the detailed overview however, where we will just have a top-level job named `.`, and only
+    # after expanding it we will see the informative name set in the reuses workflow, i.e. `Run tests`.
+    #
+    # Therefore, we go with the doulbed up `Run tests` name here, accepting the verbose check name in the PR, in order
+    # to have a better overview in the detailed view.
+    name: Run tests
+    uses: relaxdays/templates/.github/workflows/dotnet-test.yml@main
